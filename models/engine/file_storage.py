@@ -37,3 +37,5 @@ class FileStorage:
                     self.__objects[key] = BaseModel(**val)
         except FileNotFoundError:
             pass
+
+storage.all().clear()
