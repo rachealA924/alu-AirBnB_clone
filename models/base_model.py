@@ -3,6 +3,7 @@
 import models
 from uuid import uuid4
 from datetime import datetime
+import time
 
 
 class BaseModel:
@@ -25,7 +26,11 @@ class BaseModel:
                 else:
                     self.__dict__[k] = v
         else:
-            models.storage.new(self)
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            from models import storage
+            storage.new(self)  # Make sure storage uses "BaseModel.<id>" as key
 
     def save(self):
         """Update updated_at with the current datetime."""
@@ -47,3 +52,8 @@ class BaseModel:
         """Return the print/str representation of the BaseModel instance."""
         clname = self.__class__.__name__
         return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
+
+old_time = model.updated_at
+time.sleep(0.01)  # Add a small delay
+model.save()
+self.assertNotEqual(old_time, model.updated_at)

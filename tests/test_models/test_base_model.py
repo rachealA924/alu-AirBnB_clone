@@ -84,6 +84,14 @@ class TestBaseModel_instantiation(unittest.TestCase):
         self.assertEqual(bm.created_at, dt)
         self.assertEqual(bm.updated_at, dt)
 
+    def test_instance_creation(self):
+        """Test BaseModel instance creation and attribute types."""
+        model = BaseModel()
+        self.assertIsInstance(model.id, str)
+        model_key = f"BaseModel.{model.id}"  # Use correct key format
+        self.assertIsInstance(model.created_at, type(storage.all()[model_key].created_at))
+        self.assertIsInstance(model.updated_at, type(storage.all()[model_key].updated_at))
+
 
 class TestBaseModel_save(unittest.TestCase):
     """Unittests for testing save method of the BaseModel class."""
@@ -136,6 +144,15 @@ class TestBaseModel_save(unittest.TestCase):
         with open("file.json", "r") as f:
             self.assertIn(bmid, f.read())
 
+    def test_save_updates_updated_at(self):
+        """Test that save() updates updated_at."""
+        model = BaseModel()
+        old_time = model.updated_at
+        import time
+        time.sleep(0.01)  # Add a short delay
+        model.save()
+        self.assertNotEqual(old_time, model.updated_at)
+
 
 class TestBaseModel_to_dict(unittest.TestCase):
     """Unittests for testing to_dict method of the BaseModel class."""
@@ -185,6 +202,24 @@ class TestBaseModel_to_dict(unittest.TestCase):
         bm = BaseModel()
         with self.assertRaises(TypeError):
             bm.to_dict(None)
+
+
+class TestBaseModel(unittest.TestCase):
+    """Test cases for BaseModel."""
+
+    def test_instance_creation(self):
+        """Test BaseModel instance creation and attribute types."""
+        model = BaseModel()
+        self.assertIsInstance(model.id, str)
+        model_key = f"BaseModel.{model.id}"  # Use correct key format
+        self.assertIsInstance(
+            model.created_at,
+            type(storage.all()[model_key].created_at)
+        )
+        self.assertIsInstance(
+            model.updated_at,
+            type(storage.all()[model_key].updated_at)
+        )
 
 
 if __name__ == "__main__":

@@ -11,13 +11,6 @@ import unittest
 from datetime import datetime
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
-from models.user import User
-from models.state import State
-from models.place import Place
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
 
 class TestFileStorage_instantiation(unittest.TestCase):
     """Unittests for testing instantiation of the FileStorage class."""
@@ -163,13 +156,14 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("Amenity." + am.id, objs)
         self.assertIn("Review." + rv.id, objs)
 
-import os
+        model_key = f"BaseModel.{bm.id}"
+        self.assertIsInstance(bm.created_at, type(models.storage.all()[model_key].created_at))
 
-def test_reload_no_file(self):
-    print("Current working directory:", os.getcwd())
-    print("Contents of the directory:", os.listdir())
-    with self.assertRaises(FileNotFoundError):
-        models.storage.reload()
+    def test_reload_no_file(self):
+        print("Current working directory:", os.getcwd())
+        print("Contents of the directory:", os.listdir())
+        with self.assertRaises(FileNotFoundError):
+            models.storage.reload()
 
     def test_reload_with_arg(self):
         with self.assertRaises(TypeError):
