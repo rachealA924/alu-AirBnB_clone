@@ -163,7 +163,6 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("Amenity." + am.id, objs)
         self.assertIn("Review." + rv.id, objs)
 
-import os
 
 def test_reload_no_file(self):
     print("Current working directory:", os.getcwd())
