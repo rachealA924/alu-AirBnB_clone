@@ -64,4 +64,5 @@ All tests should also pass in non-interactive mode: `$ echo "python3 -m unittest
 
 - [Racheal Akello](https://github.com/rachealA924)
 - [Kevine Uwisanga](https://github.com/u-kevine)
-![HBNB Logo](hbnb logo.png)
+
+![hbnb logo](hbnb_logo.png)
